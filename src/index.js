@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
 
-import App from './components/app';
-import reducers from './reducers';
+// 브라우저에 HTML을 뿌려주는 컴포넌트를 만든다.
+const App = () => {
+    return <div>Hi!</div>; // <-- JSX
+}
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+
+// 만들어진 HTML에 대한 컴포넌트를 DOM 안에 넣도록 한다.
+
+ReactDOM.render(<App/>, document.querySelector('.container'));
