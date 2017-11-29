@@ -1,9 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import SearchBar from './components/search_bar';
+
+// Youtube API KEY
+const API_KEY = 'AIzaSyBa4ifxSToufcsBxM8ozvtOBYK3MiOmsVg';
+
 // 브라우저에 HTML을 뿌려주는 컴포넌트를 만든다.
 const App = () => {
-    return <div>Hi!</div>; // <-- JSX
+    return (
+    <div>
+        <SearchBar />
+    </div> 
+    ); // <-- JSX
 }
 
 
