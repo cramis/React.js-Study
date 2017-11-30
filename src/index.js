@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import SearchBar from './components/search_bar';
 import YoutubeSearch from 'youtube-api-search';
 import VideoList from './components/video_list';
@@ -19,22 +20,33 @@ class App extends Component {
             videos : [],
             selectedVideo : null
         };
+        
+        this.videoSearch('infinity war');
+        
+        
 
-        YoutubeSearch({key : API_KEY, term : 'infinity war'}, (videos)=>{
+    }
+
+    videoSearch(term){
+        YoutubeSearch({key : API_KEY, term : term}, (videos)=>{
             this.setState({
                 videos : videos,
                 selectedVideo : videos[0]
             });
         });
-
     }
 
     render(){
+        // 600ms 늦게 검색결과를 가지고 오도록 처리
+        const videoSearch = _.debounce((term) => {this.videoSearch(term)}, 600);
+
         return (
             <div>
-                <SearchBar />
+                <SearchBar onSearchTermChange={videoSearch} />
                 <VideoDetail video={this.state.selectedVideo} />
-                <VideoList onSelectVideo={(selectedVideo)=> this.setState({selectedVideo: selectedVideo})} videos={this.state.videos} />
+                <VideoList 
+                onSelectVideo={(selectedVideo)=> this.setState({selectedVideo})} 
+                videos={this.state.videos} />
             </div> 
             ); 
     }
