@@ -1,3 +1,14 @@
+
+# 반드시 app-config.js 를 생성할 것
+
+ex)
+export const myConfig = {
+    API_KEY : "testtestestetsetestes"
+};
+
+
+
+
 오픈웨더
 
 https://openweathermap.org/
