@@ -1,4 +1,8 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import {fetchWhether} from '../actions/index';
 
 class SearchBar extends Component{
 
@@ -10,6 +14,7 @@ class SearchBar extends Component{
         }
 
         this.onTextChange = this.onTextChange.bind(this);
+        this.onSearchBoxSubmit = this.onSearchBoxSubmit.bind(this);
 
     }
 
@@ -20,6 +25,8 @@ class SearchBar extends Component{
 
     onSearchBoxSubmit(event){
         event.preventDefault();
+        this.props.fetchWhether(this.state.term);
+        this.setState({term : ''});
     }
 
     render(){
@@ -40,5 +47,9 @@ class SearchBar extends Component{
     }
 }
 
+function mapDispatchToProp(dispatch){
+    return bindActionCreators({fetchWhether}, dispatch);
+}
 
-export default SearchBar;
+
+export default connect(null, mapDispatchToProp)(SearchBar);
