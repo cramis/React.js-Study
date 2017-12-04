@@ -20,7 +20,6 @@ class SearchBar extends Component{
 
     onTextChange(event){
         this.setState({term : event.target.value});
-        console.log(this.state.term);
     }
 
     onSearchBoxSubmit(event){
