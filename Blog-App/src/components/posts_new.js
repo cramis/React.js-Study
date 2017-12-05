@@ -1,14 +1,27 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {reduxForm} from 'redux-form';
 import {Link} from 'react-router';
 
 import {createPosts} from '../actions/index'
 
 class PostsNew extends Component{
+
+    static contextTypes = {
+        router : PropTypes.object
+    };
+
+    onSubmit(props){
+        this.props.createPosts(props)
+        .then(()=>{
+            // 제출 성공시 루트 경로로 이동
+            this.context.router.push('/');
+        });
+    }
+
     render(){
         const {fields : {title, categories, content}, handleSubmit} = this.props;
         return (
-            <form onSubmit={handleSubmit(this.props.createPosts)}>
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <h3>새로운 포스트 작성</h3>
                 <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
                     <label>제목</label>
@@ -54,8 +67,6 @@ function validate(values){
     if(!values.content){
         errors.content = "내용을 입력해주세요.";
     }
-
-    
 
     return errors;
 }
