@@ -1,14 +1,46 @@
 import React, {Component, PropTypes} from 'react';
 import {reduxForm} from 'redux-form';
 import {Link} from 'react-router';
+import _ from 'lodash';
 
-import {createPosts} from '../actions/index'
+import {createPosts} from '../actions/index';
+
+const FIELDS = {
+    title : {
+        type: 'input',
+        label : '제목'
+    }, 
+    categories : {
+        type: 'input',
+        label : '카테고리'
+    }, 
+    content :{
+        type: 'textarea',
+        label : '내용'
+    }
+}
 
 class PostsNew extends Component{
 
     static contextTypes = {
         router : PropTypes.object
     };
+
+    renderField(fieldConfig, field){
+        const fieldHelper = this.props.fields[field];
+
+        return (
+            <div className={`form-group ${fieldHelper.touched && fieldHelper.invalid ? 'has-danger' : ''}`}>
+            <label>{fieldConfig.label}</label>
+            <fieldConfig.type type="text" className="form-control" {...fieldHelper} />
+            <div className="text-help">
+                { fieldHelper.touched ?  fieldHelper.error : ''}
+            </div>
+        </div>
+        );
+
+
+    }
 
     onSubmit(props){
         this.props.createPosts(props)
@@ -19,31 +51,14 @@ class PostsNew extends Component{
     }
 
     render(){
-        const {fields : {title, categories, content}, handleSubmit} = this.props;
+        const {handleSubmit} = this.props;
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <h3>새로운 포스트 작성</h3>
-                <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
-                    <label>제목</label>
-                    <input type="text" className="form-control" {...title} />
-                    <div className="text-help">
-                        { title.touched ?  title.error : ''}
-                    </div>
-                </div>
-                <div className={`form-group ${categories.touched && categories.invalid ? 'has-danger' : ''}`}>
-                    <label>카테고리</label>
-                    <input type="text" className="form-control" {...categories} />
-                    <div className="text-help">
-                        { categories.touched ?  categories.error : ''}
-                    </div>
-                </div>
-                <div className={`form-group ${content.touched && content.invalid ? 'has-danger' : ''}`}>
-                    <label>본문</label>
-                    <textarea className="form-control" {...content} />
-                    <div className="text-help">
-                        { content.touched ?  content.error : ''}
-                    </div>
-                </div>
+
+
+                {_.map(FIELDS, this.renderField.bind(this))}
+
 
                 <button type="submit" className="btn btn-primary">작성완료</button>
                 <Link to="/" className="btn btn-danger">취소</Link>
@@ -56,17 +71,23 @@ class PostsNew extends Component{
 function validate(values){
     const errors = {};
 
-    if(!values.title){
-        errors.title = "제목을 입력해주세요.";
-    }
+    // if(!values.title){
+    //     errors.title = "제목을 입력해주세요.";
+    // }
 
-    if(!values.categories){
-        errors.categories = "카테고리를 입력해주세요.";
-    }
+    // if(!values.categories){
+    //     errors.categories = "카테고리를 입력해주세요.";
+    // }
 
-    if(!values.content){
-        errors.content = "내용을 입력해주세요.";
-    }
+    // if(!values.content){
+    //     errors.content = "내용을 입력해주세요.";
+    // }
+
+    _.each(FIELDS, (fieldValue, fieldName) => {
+        if(!values[fieldName]){
+            errors[fieldName] = `${fieldValue.label} 부분을 입력해주세요.`;
+        }
+    });
 
     return errors;
 }
@@ -74,6 +95,6 @@ function validate(values){
 
 export default reduxForm({
     form : 'PostsNewForm',
-    fields : ['title', 'categories', 'content'],
+    fields : _.keys(FIELDS), //['title', 'categories', 'content'],
     validate
 }, null, {createPosts})(PostsNew);
