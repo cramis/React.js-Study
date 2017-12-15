@@ -3,14 +3,23 @@ import App from '../../src/components/app';
 
 
 describe('App', ()=>{
+  let component;
 
-  it('div 안에 무슨 글이 있더라?', ()=>{
-
-    const component = renderComponent(App);
-
-    expect(component).to.contain('React simple starter');
+  beforeEach(()=>{
+    component = renderComponent(App);
   });
-  
+
+  it('class [comment-box]를 달고있는 컴포넌트를 가지고 있다.', ()=>{
+
+    
+    expect(component.find('.comment-box')).to.exist;
+  });
+
+  it('class [comment-list]를 달고있는 컴포넌트를 가지고 있다.', ()=>{
+
+    
+    expect(component.find('.comment-list')).to.exist;
+  });
   
 });
 
