@@ -5,6 +5,8 @@ import { createStore, applyMiddleware } from 'redux';
 import {Route, Router, browserHistory } from 'react-router';
 
 import App from './components/app';
+import Resources from './components/resources';
+
 import reducers from './reducers';
 
 
@@ -14,6 +16,7 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
+        <Route path="/resources" component={Resources} />
       </Route>
     </Router>
   </Provider>
